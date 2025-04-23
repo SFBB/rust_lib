@@ -1,11 +1,13 @@
+use std::fmt::Debug;
+
 #[derive(Debug)]
-struct Templat<T>
+struct Templat<T: Debug>
 {
 	data: T,
 }
 
 #[derive(Debug)]
-struct DataTemplate<T>
+struct DataTemplate<T: Debug>
 {
 	data_: T,
 }

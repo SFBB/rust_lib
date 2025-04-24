@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 
 #[derive(Debug)]
-struct Templat<T: Debug>
+struct Template<T: Debug>
 {
 	data: T,
 }
@@ -10,24 +10,47 @@ struct Templat<T: Debug>
 struct DataTemplate<T: Debug>
 {
 	data_: T,
+    version: u32,
 }
 
-fn print_data<T>(data: T)
+impl <T: Debug> DataTemplate<T>
+{
+    fn new(data: T) -> Self {
+        DataTemplate { data_: data, version: 1 }
+    }
+
+    fn increment_version(&mut self) {
+        self.version += 1;
+    } 
+}
+
+fn print_data<T>(data: &DataTemplate<T>)
     where T: std::fmt::Debug
 {
 	println!("{:?}", data);
 }
 
+fn modify_data<T>(data: &mut DataTemplate<T>)
+    where T: std::fmt::Debug
+{
+    data.increment_version();
+}
 
 fn main() {
     println!("Hello, world!");
 
      // 1. Create a concrete instance of dataTemplate with i32
-    let inner_instance: DataTemplate<i32> = DataTemplate { data_: 123 };
+    let inner_instance: Template<i32> = Template { data: 123 };
 
     // 2. Create a concrete instance of Template with dataTemplate<i32>
-    let outer_instance: Templat<DataTemplate<i32>> = Templat { data: inner_instance };
+    let mut outer_instance: DataTemplate<Template<i32>> = DataTemplate::new(inner_instance);
 
     // 3. Call printData with the concrete instance
-    print_data(outer_instance);
+    print_data::<Template<i32>>(&outer_instance);
+    // 4. Call modifyData with the concrete instance
+    modify_data(&mut outer_instance);
+    // 5. Call printData again to see the changes
+    print_data(&outer_instance);
+    modify_data(&mut outer_instance);
+    print_data(&outer_instance);
 }

@@ -1,4 +1,5 @@
 use std::fmt::Debug;
+use data_impl_derive::data_functions;
 
 #[derive(Debug)]
 struct Template<T: Debug>
@@ -7,6 +8,7 @@ struct Template<T: Debug>
 }
 
 #[derive(Debug)]
+#[data_functions]
 struct DataTemplate<T: Debug>
 {
 	data_: T,
@@ -53,4 +55,11 @@ fn main() {
     print_data(&outer_instance);
     modify_data(&mut outer_instance);
     print_data(&outer_instance);
+
+    outer_instance.modify_data();
+    outer_instance.print_data();
+    outer_instance.modify_data();
+    outer_instance.print_data();
+    outer_instance.modify_data();
+    outer_instance.print_data();
 }
